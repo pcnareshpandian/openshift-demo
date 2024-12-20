@@ -3,10 +3,10 @@ name: Gitleaks Secret Detection
 on:
   push:
     branches:
-      - master  # Run the workflow on pushes to `master` branch
+      - master
   pull_request:
     branches:
-      - master  # Run the workflow for PRs to the `master` branch
+      - master
 
 jobs:
   gitleaks:
@@ -20,10 +20,11 @@ jobs:
       - name: Install Gitleaks
         run: |
           # Install Gitleaks on Ubuntu
-          curl -sSL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks-linux-amd64 -o gitleaks
-          chmod +x gitleaks
-          sudo mv gitleaks /usr/local/bin/gitleaks
-          ls /usr/local/bin/gitleaks
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.9.0/gitleaks-linux-amd64 -o /usr/local/bin/gitleaks
+          chmod +x /usr/local/bin/gitleaks
+
+      - name: Verify Gitleaks Installation
+        run: gitleaks --version  # To check if the binary was installed correctly
 
       - name: Run Gitleaks
-        run: gitleaks detect . --exit-code=1 --verbose
+        run: gitleaks detect --repo-path=. --exit-code=1 --verbose
