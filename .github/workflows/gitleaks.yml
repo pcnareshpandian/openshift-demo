@@ -23,6 +23,7 @@ jobs:
           curl -sSL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks-linux-amd64 -o gitleaks
           chmod +x gitleaks
           sudo mv gitleaks /usr/local/bin/gitleaks
+          ls /usr/local/bin/gitleaks
 
       - name: Run Gitleaks
         run: gitleaks detect --repo-path=. --exit-code=1 --verbose
