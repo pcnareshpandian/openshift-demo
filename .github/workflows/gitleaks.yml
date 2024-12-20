@@ -3,10 +3,10 @@ name: Gitleaks Secret Detection
 on:
   push:
     branches:
-      - master
+      - master  # Use your actual branch name, which is `master` in your case
   pull_request:
     branches:
-      - master
+      - master  # This ensures the PR to the `master` branch is checked for secrets
 
 jobs:
   gitleaks:
@@ -14,30 +14,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Install Gitleaks
-        run: |
-          # Download Gitleaks
-          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.9.0/gitleaks-linux-amd64 -o /usr/local/bin/gitleaks
-          
-          # Check if the download was successful
-          if [ ! -f /usr/local/bin/gitleaks ]; then
-            echo "Gitleaks download failed!"
-            exit 1
-          fi
+    - name: Install Gitleaks
+      run: |
+        sudo apt update -y
+        sudo apt install gitleaks -y
 
-          # Make it executable
-          chmod +x /usr/local/bin/gitleaks
-
-      - name: Verify Gitleaks Installation
-        run: |
-          if ! command -v gitleaks &> /dev/null; then
-            echo "Gitleaks could not be installed!"
-            exit 1
-          fi
-          gitleaks --version
-
-      - name: Run Gitleaks
-        run: gitleaks detect --repo-path=. --exit-code=1 --verbose
+    - name: Run Gitleaks
+      run: gitleaks detect --repo-path=. --exit-code=1 --verbose
