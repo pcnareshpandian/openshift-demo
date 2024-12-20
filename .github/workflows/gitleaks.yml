@@ -19,12 +19,16 @@ jobs:
 
       - name: Install Gitleaks
         run: |
-          # Install Gitleaks on Ubuntu
           curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.9.0/gitleaks-linux-amd64 -o /usr/local/bin/gitleaks
           chmod +x /usr/local/bin/gitleaks
 
       - name: Verify Gitleaks Installation
-        run: gitleaks --version  # To check if the binary was installed correctly
+        run: |
+          if ! command -v gitleaks &> /dev/null; then
+            echo "Gitleaks could not be installed!"
+            exit 1
+          fi
+          gitleaks --version
 
       - name: Run Gitleaks
         run: gitleaks detect --repo-path=. --exit-code=1 --verbose
