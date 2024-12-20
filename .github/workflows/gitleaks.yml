@@ -19,7 +19,7 @@ jobs:
 
     - name: Install Gitleaks
       run: |
-        sudo apt update -y
+        sudo apt update 
         sudo apt install gitleaks -y
 
     - name: Run Gitleaks
